@@ -3,7 +3,20 @@ import {createRoot} from 'react-dom/client';
 import {BarChart,Bar,LineChart,Line,XAxis,YAxis,Tooltip,CartesianGrid,ResponsiveContainer,AreaChart,Area} from 'recharts';
 import {BrainCircuit,Play,Target,TrendingUp,ShieldCheck,RefreshCw,AlertCircle,FlaskConical,History,Users,GitCompare,Lightbulb,Bot} from 'lucide-react';import './styles.css';
 const money=n=>'₹'+Math.round(n||0).toLocaleString('en-IN');const pct=n=>((n||0)*100).toFixed(1)+'%';
-async function api(u,o={}){let r=await fetch(u,o);if(!r.ok){let m='Request failed';try{let j=await r.json();m=j.detail||j.message||m}catch{}throw Error(m)}return r.json()}
+const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+
+async function api(u,o={}) {
+  let r = await fetch(`${API_URL}${u}`, o);
+  if (!r.ok) {
+    let m = 'Request failed';
+    try {
+      let j = await r.json();
+      m = j.detail || j.message || m;
+    } catch {}
+    throw Error(m);
+  }
+  return r.json();
+}
 function Card({title,value,sub,icon}){return <div className="card"><div className="icon">{icon}</div><small>{title}</small><strong>{value}</strong><span>{sub}</span></div>}
 function App(){const [tab,setTab]=useState('overview'),[summary,setSummary]=useState(null),[result,setResult]=useState(null),[opt,setOpt]=useState(null),[experiments,setExperiments]=useState(null),[history,setHistory]=useState([]),[segments,setSegments]=useState([]),[radar,setRadar]=useState(null),[loading,setLoading]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState('');const [text,setText]=useState('What if I give new customers 10% discount?');const [s,setS]=useState({name:'10% New Customer Discount',discount_pct:10,price_change_pct:0,cod_share_pct:40,campaign_strength:40,target_new_customers:true,objective:'profit',simulations:250,free_shipping:false,cashback_pct:0,min_order_value:0});
  const load=async()=>{setError('');try{let x=await api('/api/summary');setSummary(x)}catch(e){setError(e.message)}};useEffect(()=>{load();api('/api/segments').then(setSegments).catch(()=>{});api('/api/radar').then(setRadar).catch(()=>{});},[]);

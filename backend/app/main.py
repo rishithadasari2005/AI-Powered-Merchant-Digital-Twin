@@ -3,6 +3,7 @@ from datetime import datetime,timezone
 from pathlib import Path
 import numpy as np,pandas as pd
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse,JSONResponse
 from pydantic import BaseModel,Field
 from sklearn.ensemble import RandomForestClassifier,RandomForestRegressor
@@ -11,6 +12,16 @@ from sklearn.metrics import accuracy_score,mean_absolute_error
 
 BASE=Path(__file__).resolve().parent; STATIC=BASE/'static'; DB_PATH=os.getenv('DATABASE_PATH','/tmp/merchant_twin.db')
 app=FastAPI(title='Merchant Digital Twin',version='2.0.0')
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://merchant-digital-twin-frontend.onrender.com",
+    ],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 df=None;models={};BASELINE=None;CACHE={};MODEL_METRICS={}
 
 class Scenario(BaseModel):
