@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: merchant-digital-twin
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_PATH
+        value: /tmp/merchant_twin.db
+      - key: PYTHONUNBUFFERED
+        value: "1"
