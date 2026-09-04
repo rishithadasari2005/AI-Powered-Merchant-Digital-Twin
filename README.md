@@ -1,4 +1,4 @@
-# Merchant Digital Twin
+# AI Powered Merchant Digital Twin
 Live Demo https://merchant-digital-twin-frontend.onrender.com/
 
 
