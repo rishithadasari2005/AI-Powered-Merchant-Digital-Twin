@@ -1,4 +1,4 @@
-# Merchant Digital Twin — Award Edition
+# Merchant Digital Twin
 Live Demo https://merchant-digital-twin-frontend.onrender.com/
 
 
